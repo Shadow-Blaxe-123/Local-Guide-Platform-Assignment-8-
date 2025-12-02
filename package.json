@@ -1,0 +1,11 @@
+{
+  "name": "local-guide-platform",
+  "version": "1.0.0",
+  "description": "\"This is for Assignment-8 of PH level 2 course\"",
+  "license": "ISC",
+  "author": "Shamyun Ahmed",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
