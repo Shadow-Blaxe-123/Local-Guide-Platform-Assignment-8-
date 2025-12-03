@@ -1,0 +1,11 @@
+enum Role {
+    TOURIST
+    GUIDE
+    ADMIN
+}
+
+enum UserStatus {
+    ACTIVE
+    INACTIVE
+    DELETED
+}
