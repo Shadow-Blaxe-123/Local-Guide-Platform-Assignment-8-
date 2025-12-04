@@ -4,22 +4,27 @@ import ApiError from "../../errors/ApiError";
 import status from "http-status";
 import { hash } from "bcryptjs";
 import config from "../../../config";
+import { deleteFromCloudinary } from "../../helper/fileUploader";
 
 const createTourist = async (
   data: Prisma.UserCreateInput & { travelPreferences: string[] }
 ) => {
   const isExist = await prisma.user.findFirst({
     where: {
-      email: data.email,
+      email: data.email.trim().toLowerCase(),
       isDeleted: false,
     },
   });
   if (isExist) {
+    deleteFromCloudinary(data.pic as string);
     throw new ApiError(status.CONFLICT, "Email already exist!");
   }
+  console.log(isExist);
+  console.log(data.pic);
   const res = await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
       data: {
+        ...data,
         email: data.email,
         password: await hash(data.password, config.hash_salt),
         name: data.name,
@@ -29,6 +34,9 @@ const createTourist = async (
       data: {
         userId: user.id,
         travelPreferences: data.travelPreferences,
+      },
+      include: {
+        user: true,
       },
     });
   });

@@ -3,8 +3,15 @@ import catchAsync from "../../helper/catchAsync";
 import sendResponse from "../../helper/sendResponse";
 import status from "http-status";
 import { UserService } from "./user.service";
+import { uploadImage } from "../../helper/fileUploader";
 
 const createTourist = catchAsync(async (req: Request, res: Response) => {
+  if (req.file) {
+    const filename = `image_${Date.now()}`;
+    const result = await uploadImage(req.file.buffer, filename);
+    req.body = JSON.parse(req.body.data);
+    req.body.pic = result?.secure_url;
+  }
   const result = await UserService.createTourist(req.body);
   sendResponse(res, {
     statusCode: status.CREATED,

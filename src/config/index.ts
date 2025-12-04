@@ -12,4 +12,9 @@ export default {
   jwt: {
     access_token_secret: process.env.JWT_ACCESS_TOKEN_SECRET as string,
   },
+  cloudinary: {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
+    api_key: process.env.CLOUDINARY_API_KEY as string,
+    api_secret: process.env.CLOUDINARY_API_SECRET as string,
+  },
 };
