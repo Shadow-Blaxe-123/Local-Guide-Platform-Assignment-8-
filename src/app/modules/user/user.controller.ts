@@ -9,7 +9,6 @@ const createTourist = catchAsync(async (req: Request, res: Response) => {
   if (req.file) {
     const filename = `image_${Date.now()}`;
     const result = await uploadImage(req.file.buffer, filename);
-    req.body = JSON.parse(req.body.data);
     req.body.pic = result?.secure_url;
   }
   const result = await UserService.createTourist(req.body);

@@ -2,13 +2,14 @@ import { Router } from "express";
 import { UserController } from "./user.controller";
 import upload from "../../middlewares/multer";
 import validateRequest from "../../middlewares/validateRequest";
+import { UserValidation } from "./user.validation";
 
 const router = Router();
 
 router.post(
   "/create-tourist",
   upload.single("file"),
-  //   validateRequest(),
+  validateRequest(UserValidation.createTouristZodSchema),
   UserController.createTourist
 );
 router.post("/create-admin", UserController.createAdmin);

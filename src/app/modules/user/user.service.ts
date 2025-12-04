@@ -16,7 +16,9 @@ const createTourist = async (
     },
   });
   if (isExist) {
-    deleteFromCloudinary(data.pic as string);
+    if (isExist.pic && data.pic) {
+      await deleteFromCloudinary(data.pic as string);
+    }
     throw new ApiError(status.CONFLICT, "Email already exist!");
   }
   console.log(isExist);

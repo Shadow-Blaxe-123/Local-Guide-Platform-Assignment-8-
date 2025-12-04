@@ -1,8 +1,12 @@
 import { Prisma } from "@prisma/client";
 import type { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
+import { deleteFromCloudinary } from "../helper/fileUploader";
+import type { ErrorSources } from "../interfaces/error";
+import { handleZodError } from "../errors/handleZodError";
+import config from "../../config";
 
-const globalErrorHandler = (
+const globalErrorHandler = async (
   err: any,
   req: Request,
   res: Response,
@@ -12,6 +16,14 @@ const globalErrorHandler = (
   let success = false;
   let message = err.message || "Something went wrong!";
   let error = err;
+  let errorSources: ErrorSources[] | undefined = [];
+
+  if (err.name === "ZodError") {
+    const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError.statuscode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources;
+  }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === "P2002") {
@@ -46,7 +58,9 @@ const globalErrorHandler = (
   res.status(statusCode).json({
     success,
     message,
-    error,
+    errorSources,
+    error: config.node_env === "development" ? error : null,
+    stack: config.node_env === "development" ? error.stack : null,
   });
 };
 
