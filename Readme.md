@@ -26,14 +26,6 @@ This project democratizes travel guiding, allowing locals to monetize their know
   - **Admin**: Can manage users, tour listings and bookings.
 - **Security**: JWT-based Auth, secure password hashing.
 
-### 3.2 User Profile Management (CRUD)
-
-- **Common Fields**: Name, Profile Pic, Bio, Languages Spoken.
-- **Guide Specifics**:
-  - Expertise (e.g., History, Nightlife, Shopping).
-  - Daily Rate (how much they charge per day).
-- **Tourist Specifics**: Travel preferences.
-
 ### 3.3 Tour Listing Management (CRUD)
 
 - **Create Listing**:
