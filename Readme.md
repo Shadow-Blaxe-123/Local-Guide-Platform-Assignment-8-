@@ -97,17 +97,12 @@ This project democratizes travel guiding, allowing locals to monetize their know
 
 > **Note:** Feel free to add other navigation options as needed.
 
-### 4.2 Authentication Pages
-
-- **`/register`**: Sign up with role selection (Tourist/Guide). Admin accounts are created separately.
-- **`/login`**: Standard secure login.
-
 ### 4.3 Home / Landing Page (`/`)
 
 - Hero search bar: "Where are you going?"
 - Featured cities and top-rated guides.
 - "Become a Guide" CTA.
-
+  
 > **Note:** Must have a minimum of 6 sections on the home page. Add other necessary sections as needed (e.g., How It Works, Popular Destinations, Top-Rated Guides, Testimonials/Reviews, Why Choose Us, Categories/Tour Types).
 
 ### 4.4 Profile Page (`/profile/[id]`)
@@ -145,7 +140,7 @@ This project democratizes travel guiding, allowing locals to monetize their know
 | 📅 Availability Calendar | Guides set specific available dates/times           |
 | 🗺️ Interactive Map       | View tour routes or meeting points on Google/Mapbox |
 | 🌐 Multi-language        | UI translation for international users              |
-  
+
 ## 6. Folder & API Structure
 
 > **Note:** The folder structure below is a suggested starting point to organize your code. You can modify the structure add new folders or reorganize as needed to fit your implementation approach.
@@ -175,19 +170,17 @@ backend/
 
 > **Note:** These are suggested API endpoints to implement core features. You must add, modify or remove endpoints as needed to support all functionality in your application.
 
-| Method | Endpoint                | Description                   |
-| :----- | :---------------------- | :---------------------------- |
-| POST   | `/api/auth/register`    | Register user (Tourist/Guide) |
-| POST   | `/api/auth/login`       | Login user                    |
-| GET    | `/api/users/:id`        | Get public profile            |
-| PATCH  | `/api/users/:id`        | Update user profile           |
-| GET    | `/api/listings`         | Search/Filter tours           |
-| PATCH  | `/api/listings/:id`     | Update tour listing           |
-| DELETE | `/api/listings/:id`     | Delete tour listing           |
-| POST   | `/api/bookings`         | Request a booking             |
-| PATCH  | `/api/bookings/:id`     | Accept/Reject booking         |
-| POST   | `/api/reviews`          | Submit a review               |
-| POST   | `/api/payments/booking` | Pay for booking               |
+| Method | Endpoint                | Description           |
+| :----- | :---------------------- | :-------------------- |
+| GET    | `/api/users/:id`        | Get public profile    |
+| PATCH  | `/api/users/:id`        | Update user profile   |
+| GET    | `/api/listings`         | Search/Filter tours   |
+| PATCH  | `/api/listings/:id`     | Update tour listing   |
+| DELETE | `/api/listings/:id`     | Delete tour listing   |
+| POST   | `/api/bookings`         | Request a booking     |
+| PATCH  | `/api/bookings/:id`     | Accept/Reject booking |
+| POST   | `/api/reviews`          | Submit a review       |
+| POST   | `/api/payments/booking` | Pay for booking       |
 
 ## Assignment 8 - Batch 5
 
@@ -209,15 +202,12 @@ backend/
 
 ## 🛠️ Technology Stack
 
-| Category           | Technologies                                    |
-| :----------------- | :---------------------------------------------- |
-| **Frontend**       | Next.js, Tailwind CSS                           |
-| **Backend**        | Node.js, Express.js, Prisma / Mongoose          |
-| **Database**       | PostgreSQL / MongoDB                            |
-| **Authentication** | JWT                                             |
-| **Payment**        | SSLCommerz / Stripe / Any other payment gateway |
-| **Deployment**     | Vercel, Render, Railway                         |
-| **Others**         | Any required npm packages                       |
+| Category       | Technologies                                    |
+| :------------- | :---------------------------------------------- |
+| **Frontend**   | Next.js, Tailwind CSS                           |
+| **Payment**    | SSLCommerz / Stripe / Any other payment gateway |
+| **Deployment** | Vercel, Render, Railway                         |
+| **Others**     | Any required npm packages                       |
 
 ---
 
@@ -248,7 +238,6 @@ backend/
 #### 📝 Example Submission Format
 
 ```bash
-
 GitHub Client Repo: Your GitHub Client Repo Link
 GitHub Server Repo: Your GitHub Server Repo Link
 
@@ -265,14 +254,6 @@ Password: Your Admin Password
 ---
 
 ## 🎓 Assignment Distribution & Deadlines
-
-### 🆔 Assignment Number based on Student ID
-
-Check your Student ID by clicking your profile image on the [Programming Hero Website](https://web.programming-hero.com/profile).
-
-| Last Digit of Student ID |       Assignment Variant       |
-| :----------------------: | :----------------------------: |
-|       **7, 8, 9**        | [Local Guide](./LocalGuide.md) |
 
 ### ⏰ Deadline
 
