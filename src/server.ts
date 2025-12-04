@@ -1,6 +1,6 @@
-import { Server } from "http";
-import app from "./app";
+import type { Server } from "http";
 import config from "./config";
+import app from "./app";
 
 async function bootstrap() {
   // This variable will hold our server instance

@@ -15,7 +15,8 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
+    "dev": "tsx watch ./src/server.ts",
+    "start": "node ./dist/server.js"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -26,13 +27,12 @@
     "@types/node": "^24.10.1",
     "@types/nodemailer": "^7.0.4",
     "@types/pg": "^8.15.6",
-    "prisma": "^7.0.1",
+    "prisma": "^6.19.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.0.1",
-    "@prisma/client": "^7.0.1",
+    "@prisma/client": "^6.19.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.8.0",
     "cookie-parser": "^1.4.7",
@@ -44,7 +44,6 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.11",
-    "pg": "^8.16.3",
     "uuid": "^13.0.0",
     "zod": "^4.1.13"
   }

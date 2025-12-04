@@ -24,7 +24,7 @@ app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({
-    message: "LG Platform API running ...",
+    message: "WanderWith API running ...",
     enivronment: config.node_env,
     uptime: process.uptime().toFixed(2) + " seconds",
     timestamp: new Date().toISOString(),

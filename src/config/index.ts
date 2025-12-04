@@ -8,6 +8,7 @@ export default {
   port: process.env.PORT,
   database_url: process.env.DATABASE_URL,
   frontend_url: process.env.FRONTEND_URL,
+  hash_salt: Number(process.env.HASH_SALT),
   jwt: {
     access_token_secret: process.env.JWT_ACCESS_TOKEN_SECRET as string,
   },
