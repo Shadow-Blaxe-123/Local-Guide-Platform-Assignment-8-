@@ -12,7 +12,17 @@ router.post(
   validateRequest(UserValidation.createTouristZodSchema),
   UserController.createTourist
 );
-router.post("/create-admin", UserController.createAdmin);
-router.post("/create-guide", UserController.createGuide);
+router.post(
+  "/create-admin",
+  upload.single("file"),
+  validateRequest(UserValidation.createTouristZodSchema),
+  UserController.createAdmin
+);
+router.post(
+  "/create-guide",
+  upload.single("file"),
+  validateRequest(UserValidation.createTouristZodSchema),
+  UserController.createGuide
+);
 
 export const UserRoute = router;

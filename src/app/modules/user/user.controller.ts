@@ -19,6 +19,33 @@ const createTourist = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const createAdmin = catchAsync(async (req: Request, res: Response) => {});
-const createGuide = catchAsync(async (req: Request, res: Response) => {});
+const createGuide = catchAsync(async (req: Request, res: Response) => {
+  if (req.file) {
+    const filename = `image_${Date.now()}`;
+    const result = await uploadImage(req.file.buffer, filename);
+    req.body.pic = result?.secure_url;
+  }
+  const result = await UserService.createGuide(req.body);
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "Guide created successfully!",
+    data: result,
+  });
+});
+const createAdmin = catchAsync(async (req: Request, res: Response) => {
+  if (req.file) {
+    const filename = `image_${Date.now()}`;
+    const result = await uploadImage(req.file.buffer, filename);
+    req.body.pic = result?.secure_url;
+  }
+  const result = await UserService.createAdmin(req.body);
+  sendResponse(res, {
+    statusCode: status.CREATED,
+    success: true,
+    message: "Admin created successfully!",
+    data: result,
+  });
+});
+
 export const UserController = { createTourist, createAdmin, createGuide };
