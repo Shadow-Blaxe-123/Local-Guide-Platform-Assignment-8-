@@ -18,13 +18,10 @@ This project democratizes travel guiding, allowing locals to monetize their know
 
 ### 3.1 User Authentication & Roles
 
-- **Register / Login**:
-  - Email & Password
 - **Roles**:
   - **Tourist**: Can search tours and book guides.
   - **Guide**: Can create tour listings and accept bookings.
   - **Admin**: Can manage users, tour listings and bookings.
-- **Security**: JWT-based Auth, secure password hashing.
 
 ### 3.3 Tour Listing Management (CRUD)
 
@@ -147,7 +144,6 @@ This project democratizes travel guiding, allowing locals to monetize their know
 | :---------------------- | :-------------------------------------------------- |
 | 📅 Availability Calendar | Guides set specific available dates/times           |
 | 🗺️ Interactive Map       | View tour routes or meeting points on Google/Mapbox |
-| 🏅 Badges                | "Super Guide", "Newcomer", "Foodie Expert"          |
 | 🌐 Multi-language        | UI translation for international users              |
   
 ## 6. Folder & API Structure
@@ -274,11 +270,9 @@ Password: Your Admin Password
 
 Check your Student ID by clicking your profile image on the [Programming Hero Website](https://web.programming-hero.com/profile).
 
-| Last Digit of Student ID |              Assignment Variant              |
-| :----------------------: | :------------------------------------------: |
-|      **0, 1, 2, 3**      |  [Travel Buddy & Meetup](./TravelBuddy.md)   |
-|       **4, 5, 6**        | [Events & Activities](./EventsActivities.md) |
-|       **7, 8, 9**        |        [Local Guide](./LocalGuide.md)        |
+| Last Digit of Student ID |       Assignment Variant       |
+| :----------------------: | :----------------------------: |
+|       **7, 8, 9**        | [Local Guide](./LocalGuide.md) |
 
 ### ⏰ Deadline
 
