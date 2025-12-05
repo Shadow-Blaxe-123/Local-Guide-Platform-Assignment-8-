@@ -31,8 +31,24 @@ const createAdminZodSchema = z.object({
   contactNumber: z.string().optional(),
 });
 
+export const updateUserSchema = z.object({
+  // Base user fields
+  email: z.string().email().optional(),
+  name: z.string().optional(),
+  pic: z.string().optional(),
+  bio: z.string().optional(),
+  contactNumber: z.string().optional(),
+  languagesSpoken: z.array(z.string()).optional(),
+
+  // Role-specific fields
+  travelPreferences: z.array(z.string()).optional(), // tourist
+  expertise: z.array(z.string()).optional(), // guide
+  dailyRate: z.number().optional(), // guide
+});
+
 export const UserValidation = {
   createTouristZodSchema,
   createGuideZodSchema,
   createAdminZodSchema,
+  updateUserSchema,
 };
