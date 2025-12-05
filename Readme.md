@@ -148,13 +148,6 @@ This project democratizes travel guiding, allowing locals to monetize their know
 ### 🗂 Folder Structure
 
 ```bash
-frontend/
- ├── app/
- │   ├── (auth)/...
- │   ├── (public)/explore, tours/[id]
- │   ├── (dashboard)/guide, tourist, admin
- │   ├── components/
- │   └── ...
 backend/
  ├── src/
  │   ├── modules/
@@ -204,10 +197,8 @@ backend/
 
 | Category       | Technologies                                    |
 | :------------- | :---------------------------------------------- |
-| **Frontend**   | Next.js, Tailwind CSS                           |
 | **Payment**    | SSLCommerz / Stripe / Any other payment gateway |
 | **Deployment** | Vercel, Render, Railway                         |
-| **Others**     | Any required npm packages                       |
 
 ---
 

@@ -18,12 +18,12 @@ const login = async (payload: { email: string; password: string }) => {
     throw new ApiError(status.BAD_REQUEST, "Invalid password");
   }
   const accessToken = jwtHelper.generateToken(
-    { email: user.email, role: user.role, name: user.name },
+    { id: user.id, email: user.email, role: user.role, name: user.name },
     config.jwt.access_token_secret,
     config.jwt.access_token_expire
   );
   const refreshToken = jwtHelper.generateToken(
-    { email: user.email, role: user.role, name: user.name },
+    { id: user.id, email: user.email, role: user.role, name: user.name },
     config.jwt.refresh_token_secret,
     config.jwt.refresh_token_expire
   );

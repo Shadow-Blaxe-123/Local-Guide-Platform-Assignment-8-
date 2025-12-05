@@ -40,5 +40,12 @@ router.get(
 
   UserController.getSingleUser
 );
+router.patch(
+  "/:id",
+  auth(Role.ADMIN, Role.GUIDE, Role.TOURIST),
+  upload.single("file"),
+  validateRequest(UserValidation.updateUserSchema),
+  UserController.updateUser
+);
 
 export const UserRoute = router;
