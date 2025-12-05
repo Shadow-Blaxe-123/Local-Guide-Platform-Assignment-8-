@@ -324,6 +324,37 @@ export const updateUser = async (
   return updatedUser;
 };
 
+const deleteUser = async (id: string, authUser: IJWTPayload) => {
+  // 1. Check if user exists
+  const existingUser = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!existingUser) {
+    throw new ApiError(status.NOT_FOUND, "User not found!");
+  }
+
+  // 2. Authorization rule
+  if (authUser.role !== "ADMIN" && authUser.id !== id) {
+    throw new ApiError(
+      status.UNAUTHORIZED,
+      "You are not allowed to delete this user!"
+    );
+  }
+
+  // 3. Hard delete (cascade removes dependent rows)
+  const deletedUser = await prisma.user.delete({
+    where: { id },
+  });
+
+  if (deletedUser.pic) {
+    await deleteFromCloudinary(deletedUser.pic as string);
+    console.log(`Deleting existing image...`, deletedUser.pic);
+  }
+
+  return deletedUser;
+};
+
 export const UserService = {
   createTourist,
   createGuide,
@@ -331,4 +362,5 @@ export const UserService = {
   getAllUsers,
   getSingleUser,
   updateUser,
+  deleteUser,
 };

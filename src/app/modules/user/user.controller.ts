@@ -98,6 +98,19 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.deleteUser(
+    req.params.id as string,
+    req.user as IJWTPayload
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User deleted successfully!",
+    data: result,
+  });
+});
+
 export const UserController = {
   createTourist,
   createAdmin,
@@ -105,4 +118,5 @@ export const UserController = {
   getAllUsers,
   getSingleUser,
   updateUser,
+  deleteUser,
 };
