@@ -4,6 +4,7 @@ import sendResponse from "../../helper/sendResponse";
 import status from "http-status";
 import { UserService } from "./user.service";
 import { uploadImage } from "../../helper/fileUploader";
+import pick from "../../helper/pick";
 
 const createTourist = catchAsync(async (req: Request, res: Response) => {
   if (req.file) {
@@ -48,4 +49,40 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const UserController = { createTourist, createAdmin, createGuide };
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const options = pick(req.query, ["page", "limit", "sortBy", "sort"]);
+  const filters = pick(req.query, [
+    "role",
+    "email",
+    "searchTerm",
+    "travelPreferences",
+    "expertise",
+    "dailyRate",
+  ]);
+
+  const result = await UserService.getAllUsers(filters, options);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Users retrieved successfully!",
+    data: result.data,
+    meta: result.meta,
+  });
+});
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.getSingleUser(req.params.id as string);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Users retrieved successfully!",
+    data: result,
+  });
+});
+
+export const UserController = {
+  createTourist,
+  createAdmin,
+  createGuide,
+  getAllUsers,
+  getSingleUser,
+};

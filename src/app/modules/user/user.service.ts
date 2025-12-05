@@ -1,10 +1,13 @@
-import { Role, type Prisma } from "@prisma/client";
+import { Role, type Prisma, type User } from "@prisma/client";
 import prisma from "../../../config/prisma";
 import ApiError from "../../errors/ApiError";
 import status from "http-status";
 import { hash } from "bcryptjs";
 import config from "../../../config";
 import { deleteFromCloudinary } from "../../helper/fileUploader";
+import type { IOptions } from "../../interfaces/pagination";
+import { paginationHelper } from "../../helper/paginationHelper";
+import { userSearchableFields } from "./user.constants";
 
 const createTourist = async (
   data: Prisma.UserCreateInput & { travelPreferences: string[] }
@@ -121,12 +124,112 @@ const createAdmin = async (data: Prisma.UserCreateInput) => {
   return res;
 };
 
+const getAllUsers = async (params: any, options: IOptions) => {
+  const { page, limit, skip, sortBy, sort } =
+    paginationHelper.calculatePagination(options);
+
+  const { searchTerm, travelPreferences, expertise, dailyRate, ...filter } =
+    params;
+
+  const andConditions: Prisma.UserWhereInput[] = [];
+
+  if (searchTerm) {
+    andConditions.push({
+      OR: userSearchableFields.map((field) => ({
+        [field]: {
+          contains: searchTerm,
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+  if (expertise && filter.role === "GUIDE") {
+    andConditions.push({
+      guide: {
+        expertise: {
+          hasSome: expertise, // matches any of the values in array
+        },
+      },
+    });
+  }
+  if (dailyRate && filter.role === "GUIDE") {
+    andConditions.push({
+      guide: {
+        dailyRate,
+      },
+    });
+  }
+  if (travelPreferences && filter.role === "TOURIST") {
+    andConditions.push({
+      tourist: {
+        travelPreferences: {
+          hasSome: travelPreferences,
+        },
+      },
+    });
+  }
+
+  if (Object.keys(filter).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filter).map((key) => ({
+        [key]: {
+          equals: (filter as any)[key],
+        },
+      })),
+    });
+  }
+
+  const whereConditions: Prisma.UserWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.user.findMany({
+    skip,
+    take: limit,
+    where: whereConditions,
+    orderBy: {
+      [sortBy]: sort,
+    },
+    include: {
+      admin: true,
+      guide: true,
+      tourist: true,
+    },
+  });
+
+  const cleanedUsers = result.map(
+    (user: User & { admin?: any; guide?: any; tourist?: any }) => {
+      if (user.admin === null) delete user.admin;
+      if (!user.guide) delete user.guide;
+      if (!user.tourist) delete user.tourist;
+      return user;
+    }
+  );
+
+  const total = await prisma.user.count({
+    where: whereConditions,
+  });
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: cleanedUsers,
+  };
+};
+
+const getSingleUser = async (id: string) => {
+  return await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 export const UserService = {
   createTourist,
   createGuide,
   createAdmin,
-  //   getAllUsers,
-  //   getMyProfile,
-  //   changeProfileStatus,
-  //   updateMyProfie,
+  getAllUsers,
+  getSingleUser,
 };

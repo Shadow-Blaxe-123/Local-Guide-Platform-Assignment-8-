@@ -28,4 +28,17 @@ router.post(
   UserController.createGuide
 );
 
+router.get(
+  "/all",
+  auth(Role.ADMIN),
+
+  UserController.getAllUsers
+);
+router.get(
+  "/:id",
+  auth(Role.ADMIN),
+
+  UserController.getSingleUser
+);
+
 export const UserRoute = router;
