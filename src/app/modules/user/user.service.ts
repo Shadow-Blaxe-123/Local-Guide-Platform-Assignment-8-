@@ -1,14 +1,16 @@
 import { Role, type Prisma, type User } from "@prisma/client";
 import prisma from "../../../config/prisma";
+import { deleteFromCloudinary } from "../../helper/fileUploader";
 import ApiError from "../../errors/ApiError";
 import status from "http-status";
 import { hash } from "bcryptjs";
 import config from "../../../config";
-import { deleteFromCloudinary } from "../../helper/fileUploader";
 import type { IOptions } from "../../interfaces/pagination";
 import { paginationHelper } from "../../helper/paginationHelper";
 import { userSearchableFields } from "./user.constants";
+import type { IJWTPayload } from "../../interfaces";
 
+//public
 const createTourist = async (
   data: Prisma.UserCreateInput & { travelPreferences: string[] }
 ) => {
@@ -124,6 +126,8 @@ const createAdmin = async (data: Prisma.UserCreateInput) => {
   return res;
 };
 
+//Admin
+
 const getAllUsers = async (params: any, options: IOptions) => {
   const { page, limit, skip, sortBy, sort } =
     paginationHelper.calculatePagination(options);
@@ -226,10 +230,105 @@ const getSingleUser = async (id: string) => {
   });
 };
 
+export const updateUser = async (
+  id: string,
+  authUser: IJWTPayload, // contains id, email, role
+  data: Prisma.UserUpdateInput & {
+    dailyRate?: number;
+    expertise?: string[];
+    travelPreferences?: string[];
+  }
+) => {
+  // 1. Check user exists
+  const existingUser = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      admin: true,
+      guide: true,
+      tourist: true,
+    },
+  });
+
+  if (!existingUser) {
+    throw new ApiError(status.NOT_FOUND, "User not found!");
+  }
+
+  // 2. Prevent normal users from updating others
+  if (authUser.role !== "ADMIN" && authUser.id !== id) {
+    throw new ApiError(
+      status.UNAUTHORIZED,
+      "You cannot update another user's profile!"
+    );
+  }
+
+  // 3. Separate Base User fields
+  const { travelPreferences, expertise, dailyRate, ...rest } = data;
+
+  if (rest.role && authUser.role !== Role.ADMIN) {
+    if (rest.pic) {
+      console.log("Delete", rest.pic);
+      await deleteFromCloudinary(rest.pic as string);
+    }
+    throw new ApiError(status.UNAUTHORIZED, "You cannot update your role!");
+  }
+  if (rest.pic && existingUser.pic) {
+    await deleteFromCloudinary(existingUser.pic as string);
+    console.log(`Deleting existing image...`, existingUser.pic);
+  }
+  const updateData: Prisma.UserUpdateInput = {
+    ...rest,
+  };
+
+  // -------------------------
+  // ROLE-BASED UPDATE LOGIC
+  // -------------------------
+
+  // --- Tourist ---
+  if (existingUser.role === Role.TOURIST && travelPreferences) {
+    updateData.tourist = {
+      update: {
+        travelPreferences,
+      },
+    };
+  }
+
+  // --- Guide ---
+  else if (existingUser.role === Role.GUIDE) {
+    const guideUpdate: any = {};
+
+    if (expertise) guideUpdate.expertise = expertise;
+    if (dailyRate !== undefined) guideUpdate.dailyRate = dailyRate;
+
+    if (Object.keys(guideUpdate).length > 0) {
+      updateData.guide = { update: guideUpdate };
+    }
+  }
+
+  // --- Admin ---
+  else if (existingUser.role === Role.ADMIN) {
+    // Admin has no extra fields, but model exists
+    updateData.admin = {
+      update: {},
+    };
+  }
+
+  // 4. Perform main update
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: updateData,
+    include: {
+      [existingUser.role.toLowerCase()]: true,
+    },
+  });
+
+  return updatedUser;
+};
+
 export const UserService = {
   createTourist,
   createGuide,
   createAdmin,
   getAllUsers,
   getSingleUser,
+  updateUser,
 };
