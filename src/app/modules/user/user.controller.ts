@@ -5,6 +5,7 @@ import status from "http-status";
 import { UserService } from "./user.service";
 import { uploadImage } from "../../helper/fileUploader";
 import pick from "../../helper/pick";
+import type { IJWTPayload } from "../../interfaces";
 
 const createTourist = catchAsync(async (req: Request, res: Response) => {
   if (req.file) {
@@ -78,6 +79,24 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+  if (req.file) {
+    const filename = `image_${Date.now()}`;
+    const result = await uploadImage(req.file.buffer, filename);
+    req.body.pic = result?.secure_url;
+  }
+  const result = await UserService.updateUser(
+    req.params.id as string,
+    req.user as IJWTPayload,
+    req.body
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "User updated successfully!",
+    data: result,
+  });
+});
 
 export const UserController = {
   createTourist,
@@ -85,4 +104,5 @@ export const UserController = {
   createGuide,
   getAllUsers,
   getSingleUser,
+  updateUser,
 };
