@@ -1,20 +1,19 @@
 model Tour {
-    id            String       @id @default(uuid())
-    guideId       String
-    title         String
-    description   String       @db.Text
-    itinerary     String       @db.Text
-    category      TourCategory
-    price         Int
-    city          String
-    country       String
-    meetingPoint  String
-    startDateTime DateTime
-    endDateTime   DateTime
-    duration      Int
-    maxGroupSize  Int          @default(1)
-    images        String[]
-    status        TourStatus   @default(ACTIVE)
+    id           String       @id @default(uuid())
+    guideId      String
+    title        String
+    description  String       @db.Text
+    itinerary    String       @db.Text
+    category     TourCategory
+    price        Int
+    city         String
+    country      String
+    meetingPoint String
+    duration     Int
+    maxGroupSize Int          @default(1)
+    images       String[]
+    status       TourStatus   @default(ACTIVE)
+    isDeleted    Boolean      @default(false)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
