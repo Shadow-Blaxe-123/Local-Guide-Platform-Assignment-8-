@@ -7,6 +7,7 @@ const TourCategoryEnum = z.enum([
   "RELIGIOUS",
   "FOOD",
   "NATURE",
+  "HISTORICAL",
   "OTHER",
 ]);
 
