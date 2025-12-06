@@ -27,7 +27,8 @@ model Tourist {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    reviews Review[]
 
     @@map("tourists")
 }
@@ -53,7 +54,9 @@ model Guide {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    tour    Tour[]
+    reviews Review[]
 
     @@map("guides")
 }

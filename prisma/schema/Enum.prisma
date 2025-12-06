@@ -9,3 +9,17 @@ enum UserStatus {
     INACTIVE
     DELETED
 }
+
+enum TourStatus {
+    ACTIVE
+    INACTIVE
+}
+
+enum TourCategory {
+    ADVENTURE
+    CULTURAL
+    RELIGIOUS
+    FOOD
+    NATURE
+    OTHER
+}

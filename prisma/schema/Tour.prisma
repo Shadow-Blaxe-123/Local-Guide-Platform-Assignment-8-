@@ -1,0 +1,45 @@
+model Tour {
+    id            String       @id @default(uuid())
+    guideId       String
+    title         String
+    description   String       @db.Text
+    itinerary     String       @db.Text
+    category      TourCategory
+    price         Int
+    city          String
+    country       String
+    meetingPoint  String
+    startDateTime DateTime
+    endDateTime   DateTime
+    duration      Int
+    maxGroupSize  Int          @default(1)
+    images        String[]
+    status        TourStatus   @default(ACTIVE)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    guide   Guide    @relation(fields: [guideId], references: [id], onDelete: Cascade)
+    reviews Review[]
+
+    @@map("tours")
+}
+
+model Review {
+    id        String @id @default(uuid())
+    tourId    String
+    touristId String
+    guideId   String
+
+    rating  Int
+    comment String @db.Text
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    tour    Tour    @relation(fields: [tourId], references: [id], onDelete: Cascade)
+    tourist Tourist @relation(fields: [touristId], references: [id], onDelete: Cascade)
+    guide   Guide   @relation(fields: [guideId], references: [id], onDelete: Cascade)
+
+    @@map("reviews")
+}
