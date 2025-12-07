@@ -3,9 +3,9 @@ model Booking {
     tourId        String
     touristId     String
     guideId       String
-    paymentId     String
     status        BookingStatus @default(PENDING)
     scheduledAt   DateTime
+    price         Int
     paymentStatus PaymentStatus
     createdAt     DateTime      @default(now())
     updatedAt     DateTime      @updatedAt
@@ -23,7 +23,7 @@ model Payment {
     booking            Booking       @relation(fields: [bookingId], references: [id])
     status             PaymentStatus @default(PENDING)
     price              Int           @default(0)
-    paymentGatewayData Json
+    paymentGatewayData Json?
     createdAt          DateTime      @default(now())
     updatedAt          DateTime      @updatedAt
 }
