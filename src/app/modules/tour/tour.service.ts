@@ -212,8 +212,21 @@ const getAllTours = async (
   };
 };
 
+const getSingleTour = async (id: string) => {
+  return await prisma.tour.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      reviews: true,
+      guide: true,
+    },
+  });
+};
+
 export const TourService = {
   createTour,
   updateTour,
   getAllTours,
+  getSingleTour,
 };

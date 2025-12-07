@@ -10,6 +10,7 @@ import { softAuth } from "../../middlewares/softAuth";
 const router = Router();
 
 router.get("/all", softAuth, TourController.getAllTours);
+router.get("/:id", softAuth, TourController.getSingleTour);
 
 router.post(
   "/create",
