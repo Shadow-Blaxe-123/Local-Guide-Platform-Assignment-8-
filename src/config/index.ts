@@ -25,12 +25,12 @@ export default {
     reset_pass_token_expires_in: process.env
       .JWT_RESET_PASS_TOKEN_EXPIRES_IN as string,
   },
-  // reset_pass_link: process.env.RESET_PASS_LINK as string,
-  // openRouterApiKey: process.env.OPENROUTER_API_KEY as string,
-  // stripe: {
-  //   stripe_secret_key: process.env.STRIPE_SECRET_KEY as string,
-  //   stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET as string,
-  // },
+  stripe: {
+    stripe_secret_key: process.env.STRIPE_SECRET_KEY as string,
+    stripe_webhook_secret: process.env.STRIPE_WEBHOOK_SECRET as string,
+    stripe_success_url: process.env.STRIPE_SUCCESS_URL as string,
+    stripe_cancel_url: process.env.STRIPE_CANCEL_URL as string,
+  },
   smtp: {
     smtp_host: process.env.SMTP_HOST as string,
     smtp_port: Number(process.env.SMTP_PORT),
