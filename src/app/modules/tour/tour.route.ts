@@ -27,4 +27,6 @@ router.patch(
   TourController.updateTour
 );
 
+router.delete("/:id", auth(Role.GUIDE, Role.ADMIN), TourController.deleteTour);
+
 export const TourRoutes = router;

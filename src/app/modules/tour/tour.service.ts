@@ -181,7 +181,7 @@ const getAllTours = async (
   }
 
   // ❗ Always exclude deleted tours
-  if (!user || user.role === Role.TOURIST) {
+  if (!user || user.role === Role.TOURIST || user.role === Role.GUIDE) {
     andConditions.push({ isDeleted: false });
   }
 
@@ -224,9 +224,54 @@ const getSingleTour = async (id: string) => {
   });
 };
 
+const deleteTour = async (id: string, user: IJWTPayload) => {
+  // 1. Ensure the tour exists
+  const tour = await prisma.tour.findUnique({
+    where: { id },
+  });
+  const guide = await prisma.guide.findUnique({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  if (!tour) {
+    throw new ApiError(status.NOT_FOUND, "Tour not found!");
+  }
+
+  // 2. If GUIDE -> can only delete their own tours (soft delete)
+  if (user.role === Role.GUIDE) {
+    if (tour.guideId !== guide?.id) {
+      throw new ApiError(
+        status.UNAUTHORIZED,
+        "You are not authorized to delete this tour!"
+      );
+    }
+
+    return await prisma.tour.update({
+      where: { id },
+      data: { isDeleted: true },
+    });
+  }
+
+  // 3. If ADMIN → hard delete
+  if (user.role === Role.ADMIN) {
+    return await prisma.tour.delete({
+      where: { id },
+    });
+  }
+
+  // 4. Any other role → forbidden
+  throw new ApiError(
+    status.UNAUTHORIZED,
+    "You are not authorized to delete this tour!"
+  );
+};
+
 export const TourService = {
   createTour,
   updateTour,
   getAllTours,
   getSingleTour,
+  deleteTour,
 };
