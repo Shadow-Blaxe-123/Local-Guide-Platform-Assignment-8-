@@ -6,6 +6,7 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import notFound from "./app/middlewares/notFound";
 import config from "./config";
 import router from "./app/routes";
+import { PaymentController } from "./app/modules/payments/payment.controller";
 
 const app: Application = express();
 
@@ -14,6 +15,11 @@ app.use(
     origin: config.frontend_url,
     credentials: true,
   })
+);
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  PaymentController.handleStripeWebhookEvent
 );
 
 //parser
