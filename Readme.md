@@ -9,7 +9,6 @@ This project democratizes travel guiding, allowing locals to monetize their know
 ## 2. Objectives
 
 - Build a platform connecting travelers with local guides.
-- Enable guides to list services/tours and travelers to book them.
 - Provide detailed profiles with reviews and verification to ensure trust.
 - Implement a secure booking workflow.
 - Create an engaging, friendly UI/UX for discovering experiences.
@@ -43,115 +42,19 @@ This project democratizes travel guiding, allowing locals to monetize their know
   - Secure payment processing for tour bookings.
   - Integration with Stripe / SSLCommerz / any other payment gateway.
 
-## 4. Pages & Functional Requirements
-
-> **Note:** The pages listed below are examples to guide implementation. You must add additional pages and features as needed to meet all project requirements and create a complete, functional platform.
-
-### 4.1 Navbar
-
-- **When Logged Out**:
-  - Logo (links to Home)
-  - Explore Tours
-  - Become a Guide
-  - Login
-  - Register
-- **When Logged In (Tourist)**:
-  - Logo (links to Home)
-  - Explore Tours
-  - My Bookings
-  - Profile
-  - Logout
-- **When Logged In (Guide)**:
-  - Logo (links to Home)
-  - Explore Tours
-  - Dashboard (My Listings, Bookings)
-  - Profile
-  - Logout
-- **When Logged In (Admin)**:
-  - Logo (links to Home)
-  - Admin Dashboard
-  - Manage Users
-  - Manage Listings
-  - Profile
-  - Logout
-
-> **Note:** Feel free to add other navigation options as needed.
-
-### 4.3 Home / Landing Page (`/`)
-
-- Hero search bar: "Where are you going?"
-- Featured cities and top-rated guides.
-- "Become a Guide" CTA.
-  
-> **Note:** Must have a minimum of 6 sections on the home page. Add other necessary sections as needed (e.g., How It Works, Popular Destinations, Top-Rated Guides, Testimonials/Reviews, Why Choose Us, Categories/Tour Types).
-
-### 4.4 Profile Page (`/profile/[id]`)
-
-- **Guide View**: Bio, Languages, Stats (Tours given, Rating), Active Listings, Reviews.
-- **Tourist View**: Basic info, Reviews written.
-
-### 4.5 Dashboard (`/dashboard`)
-
-- **For Guides**: Upcoming bookings, Pending requests, My Listings.
-- **For Tourists**: My Trips (Upcoming/Past), Wishlist.
-- **For Admin**: User Management, Listing Management, Booking Management.
-
-### 4.6 Listing Management (`/dashboard/listings`)
-
-- List of created tours.
-- **Add/Edit Page**: Form to input tour details, upload photos, set tour price.
-
-### 4.7 Search / Explore Page (`/explore`)
-
-- Sidebar with filters (Date, Price, Category).
-- Main area showing results.
-- **Map View** (Optional): Show guide locations on a map.
-
-### 4.8 Listing Details Page (`/tours/[id]`)
-
-- Full tour description, photos, host info.
-- **Booking Widget**: Select Date/Time -> "Request to Book".
-- **Reviews Section**: Read past traveler experiences.
-
-## 5. Optional Features
-
-| Feature                 | Description                                         |
-| :---------------------- | :-------------------------------------------------- |
-| 📅 Availability Calendar | Guides set specific available dates/times           |
-| 🗺️ Interactive Map       | View tour routes or meeting points on Google/Mapbox |
-| 🌐 Multi-language        | UI translation for international users              |
-| 🏅 Badges                | Super Guide, Newcomer, Foodie Expert                |
-
 ### 🌐 API Endpoints
 
 > **Note:** These are suggested API endpoints to implement core features. You must add, modify or remove endpoints as needed to support all functionality in your application.
 
 | Method | Endpoint                | Description           |
 | :----- | :---------------------- | :-------------------- |
-| GET    | `/api/users/:id`        | Get public profile    |
-| PATCH  | `/api/users/:id`        | Update user profile   |
-| GET    | `/api/listings`         | Search/Filter tours   |
-| PATCH  | `/api/listings/:id`     | Update tour listing   |
-| DELETE | `/api/listings/:id`     | Delete tour listing   |
 | POST   | `/api/bookings`         | Request a booking     |
 | PATCH  | `/api/bookings/:id`     | Accept/Reject booking |
 | POST   | `/api/reviews`          | Submit a review       |
 | POST   | `/api/payments/booking` | Pay for booking       |
 
-## Assignment 8 - Batch 5
-
-## Mandatory Requirements (Critical)
-
-**Failure to meet the following requirements will result in ZERO marks.**
-
-### 1. Home Page Structure
-
-- The Home Page must contain a **minimum of 6 distinct sections**.
-
 ### 2. Error Handling
 
-- Proper error handling must be implemented throughout the application.
-- Users should see friendly error messages (e.g., toasts, alerts) instead of app crashes or silent failures.
 - Backend errors should be gracefully caught and communicated to the frontend.
 
 ---
@@ -212,7 +115,3 @@ Password: Your Admin Password
 ### ⏰ Deadline
 
 - December 09, 2025, at 11:59 PM
-
-### 🚫 Important Note
-
-**Plagiarism will not be tolerated.** Ensure that the code you submit is your own work. Any instances of plagiarism will result in **0 Marks**.
