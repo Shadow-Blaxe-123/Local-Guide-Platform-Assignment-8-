@@ -5,8 +5,11 @@ import validateRequest from "../../middlewares/validateRequest";
 import { TourValidation } from "./tour.validation";
 import { TourController } from "./tour.controller";
 import upload from "../../middlewares/multer";
+import { softAuth } from "../../middlewares/softAuth";
 
 const router = Router();
+
+router.get("/all", softAuth, TourController.getAllTours);
 
 router.post(
   "/create",

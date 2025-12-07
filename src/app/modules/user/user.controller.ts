@@ -6,6 +6,7 @@ import { UserService } from "./user.service";
 import { uploadImage } from "../../helper/fileUploader";
 import pick from "../../helper/pick";
 import type { IJWTPayload } from "../../interfaces";
+import { userFIlterableFields } from "./user.constants";
 
 const createTourist = catchAsync(async (req: Request, res: Response) => {
   if (req.file) {
@@ -52,14 +53,7 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const options = pick(req.query, ["page", "limit", "sortBy", "sort"]);
-  const filters = pick(req.query, [
-    "role",
-    "email",
-    "searchTerm",
-    "travelPreferences",
-    "expertise",
-    "dailyRate",
-  ]);
+  const filters = pick(req.query, userFIlterableFields);
 
   const result = await UserService.getAllUsers(filters, options);
   sendResponse(res, {

@@ -3,7 +3,7 @@ import type { IJWTPayload } from ".";
 declare global {
   namespace Express {
     interface Request {
-      user?: IJWTPayload;
+      user?: IJWTPayload | null;
     }
   }
 }

@@ -5,6 +5,8 @@ import sendResponse from "../../helper/sendResponse";
 import status from "http-status";
 import { uploadImage } from "../../helper/fileUploader";
 import type { IJWTPayload } from "../../interfaces";
+import pick from "../../helper/pick";
+import { tourFilterableFields } from "./tour.constants";
 
 const createTour = catchAsync(async (req: Request, res: Response) => {
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
@@ -65,8 +67,27 @@ const updateTour = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getAllTours = catchAsync(async (req: Request, res: Response) => {
+  const options = pick(req.query, ["page", "limit", "sortBy", "sort"]);
+  const filters = pick(req.query, tourFilterableFields);
+
+  const result = await TourService.getAllTours(
+    filters,
+    options,
+    req.user ? req.user : undefined
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Tours retrieved successfully!",
+    data: result.data,
+    meta: result.meta,
+  });
+});
 
 export const TourController = {
   createTour,
   updateTour,
+  getAllTours,
 };
