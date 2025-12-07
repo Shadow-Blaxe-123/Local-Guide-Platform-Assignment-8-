@@ -18,8 +18,9 @@ model Tour {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    guide   Guide    @relation(fields: [guideId], references: [id], onDelete: Cascade)
-    reviews Review[]
+    guide    Guide     @relation(fields: [guideId], references: [id], onDelete: Cascade)
+    reviews  Review[]
+    bookings Booking[]
 
     @@map("tours")
 }

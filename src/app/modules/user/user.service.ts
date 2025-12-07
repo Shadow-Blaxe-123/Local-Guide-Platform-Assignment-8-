@@ -227,6 +227,11 @@ const getSingleUser = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      admin: true,
+      guide: true,
+      tourist: true,
+    },
   });
 };
 

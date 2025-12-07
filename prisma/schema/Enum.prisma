@@ -24,3 +24,16 @@ enum TourCategory {
     HISTORICAL
     OTHER
 }
+
+enum BookingStatus {
+    PENDING
+    CONFIRMED
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    CANCELLED
+}
