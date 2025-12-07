@@ -115,6 +115,7 @@ const getAllTours = async (
     maxPrice,
     status,
     expertise,
+    language,
     ...filter
   } = params;
 
@@ -147,7 +148,6 @@ const getAllTours = async (
     });
   }
   if (expertise) {
-    console.log(expertise);
     andConditions.push({
       guide: {
         is: {

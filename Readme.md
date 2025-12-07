@@ -23,26 +23,6 @@ This project democratizes travel guiding, allowing locals to monetize their know
   - **Guide**: Can create tour listings and accept bookings.
   - **Admin**: Can manage users, tour listings and bookings.
 
-### 3.3 Tour Listing Management (CRUD)
-
-- **Create Listing**:
-  - Title (e.g., "Hidden Jazz Bars of New Orleans").
-  - Description & Itinerary.
-  - Tour fee.
-  - Duration (max duration tourist can stay).
-  - Meeting Point.
-  - Max Group Size.
-  - Images (Cloudinary/ImgBB).
-- **Manage**: Guides can edit or deactivate their listings.
-
-### 3.4 Search & Matching System
-
-- **Search Filters**:
-  - Destination / City.
-  - Language (e.g., "English", "Spanish").
-  - Category (Food, Art, Adventure).
-  - Price Range.
-
 ### 3.5 Booking System
 
 - **Booking Workflow**:
@@ -140,24 +120,7 @@ This project democratizes travel guiding, allowing locals to monetize their know
 | 📅 Availability Calendar | Guides set specific available dates/times           |
 | 🗺️ Interactive Map       | View tour routes or meeting points on Google/Mapbox |
 | 🌐 Multi-language        | UI translation for international users              |
-
-## 6. Folder & API Structure
-
-> **Note:** The folder structure below is a suggested starting point to organize your code. You can modify the structure add new folders or reorganize as needed to fit your implementation approach.
-
-### 🗂 Folder Structure
-
-```bash
-backend/
- ├── src/
- │   ├── modules/
- │   │   ├── users/
- │   │   ├── listings/
- │   │   ├── bookings/
- │   │   ├── reviews/
- │   │   ├── payments/
- │   └── ...
-```
+| 🏅 Badges                | Super Guide, Newcomer, Foodie Expert                |
 
 ### 🌐 API Endpoints
 
