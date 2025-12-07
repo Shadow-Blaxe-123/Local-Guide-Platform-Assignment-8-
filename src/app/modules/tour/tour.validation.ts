@@ -42,6 +42,7 @@ const updateTourSchema = z.object({
   duration: z.number().int().positive().optional(),
   maxGroupSize: z.number().int().positive().optional(),
   status: TourStatusEnum.optional(),
+  deletedImages: z.array(z.string()).optional(),
 });
 
 export const TourValidation = {

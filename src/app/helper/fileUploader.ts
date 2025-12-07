@@ -1,5 +1,4 @@
 import type {
-  CloudinaryDeleteResult,
   CloudinaryUploadOptions,
   CloudinaryUploadResult,
 } from "../interfaces/cloudinary";
@@ -7,7 +6,6 @@ import cloudinary from "../../config/cloudinary";
 import { createReadStream } from "streamifier";
 import ApiError from "../errors/ApiError";
 import status from "http-status";
-
 // ============================================
 // 4. UPLOAD UTILITIES (utils/cloudinaryUpload.js)
 // ============================================
@@ -30,6 +28,7 @@ const uploadToCloudinary = (
           reject(error);
         } else {
           resolve(result as unknown as CloudinaryUploadResult);
+          console.log("CLOUDINARY UPLOAD RESULT:", result);
         }
       }
     );
@@ -55,13 +54,20 @@ export const uploadImage = async (buffer: Buffer, filename: string) => {
 };
 
 // Delete image from Cloudinary
+
 export const deleteFromCloudinary = async (url: string) => {
   try {
-    const regex = /\/v\d+\/(.*?)\.(jpg|png|gif|jpeg|webp)$/i;
+    // const regex = /\/v\d+\/(.*?)\.(jpg|png|gif|jpeg|webp)$/i;
+    const regex = /\/v\d+\/(.+?)(?:\.[a-zA-Z]{3,4})$/;
     const match = url.match(regex);
     if (match && match[1]) {
-      const publicId = match[1];
-      await cloudinary.uploader.destroy(publicId);
+      const publicId = match[1].trim();
+      console.log(cloudinary.config());
+      const res = await cloudinary.uploader.destroy(publicId, {
+        invalidate: true,
+      });
+      console.log(publicId);
+      console.log(res);
       console.log(`File ${publicId} deleted from cloudinary`);
     }
   } catch (error: any) {

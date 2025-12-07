@@ -15,5 +15,12 @@ router.post(
   validateRequest(TourValidation.createTourSchema),
   TourController.createTour
 );
+router.patch(
+  "/:id",
+  auth(Role.GUIDE, Role.ADMIN),
+  upload.array("files", 5),
+  validateRequest(TourValidation.updateTourSchema),
+  TourController.updateTour
+);
 
 export const TourRoutes = router;
