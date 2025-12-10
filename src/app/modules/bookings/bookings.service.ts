@@ -1,5 +1,4 @@
 // Services needed:
-// 1. Create booking
 // 2. Accept/Decline booking and notify using email
 // 3. Getall bookings
 // 4. Get booking by id
@@ -12,6 +11,7 @@ import status from "http-status";
 import type { IJWTPayload } from "../../interfaces";
 import config from "../../../config";
 import { stripe } from "../../../config/stripe";
+import { sendEmail } from "../../helper/sendEmail";
 
 const createBooking = async (
   user: IJWTPayload,
@@ -95,6 +95,24 @@ const createBooking = async (
     });
 
     return { ...booking, paymentUrl: session.url };
+  });
+  const guide = await prisma.user.findFirst({
+    where: {
+      guide: {
+        id: tour.guide.id,
+      },
+    },
+  });
+  sendEmail({
+    to: guide?.email as string,
+    subject: "New Booking",
+    templateName: "bookingNotification",
+    templateData: {
+      touristName: user.name,
+      scheduledAt: payload.scheduledAt,
+      tourTitle: tour.title,
+      guideName: guide?.name,
+    },
   });
   return res;
 };
