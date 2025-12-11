@@ -103,17 +103,6 @@ const createBooking = async (
       },
     },
   });
-  sendEmail({
-    to: guide?.email as string,
-    subject: "New Booking",
-    templateName: "bookingNotification",
-    templateData: {
-      touristName: user.name,
-      scheduledAt: payload.scheduledAt,
-      tourTitle: tour.title,
-      guideName: guide?.name,
-    },
-  });
   return res;
 };
 

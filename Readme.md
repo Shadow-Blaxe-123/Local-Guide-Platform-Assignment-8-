@@ -18,14 +18,12 @@ This project democratizes travel guiding, allowing locals to monetize their know
 ### 3.1 User Authentication & Roles
 
 - **Roles**:
-  - **Tourist**: Can search tours and book guides.
   - **Guide**: Can create tour listings and accept bookings.
   - **Admin**: Can manage users, tour listings and bookings.
 
 ### 3.5 Booking System
 
 - **Booking Workflow**:
-  - Traveler requests a date/time.
   - Guide accepts or declines.
   - Status updates: Pending, Confirmed, Completed, Cancelled.
 
@@ -37,11 +35,8 @@ This project democratizes travel guiding, allowing locals to monetize their know
 ### 3.7 Payment Integration
 
 - **Booking Payments**:
-  - Tourist can pay for the tour.
   - Guide can receive payment after the tour.
-  - Secure payment processing for tour bookings.
-  - Integration with Stripe / SSLCommerz / any other payment gateway.
-
+  
 ### 🌐 API Endpoints
 
 > **Note:** These are suggested API endpoints to implement core features. You must add, modify or remove endpoints as needed to support all functionality in your application.
@@ -61,10 +56,9 @@ This project democratizes travel guiding, allowing locals to monetize their know
 
 ## 🛠️ Technology Stack
 
-| Category       | Technologies                                    |
-| :------------- | :---------------------------------------------- |
-| **Payment**    | SSLCommerz / Stripe / Any other payment gateway |
-| **Deployment** | Vercel, Render, Railway                         |
+| Category       | Technologies            |
+| :------------- | :---------------------- |
+| **Deployment** | Vercel, Render, Railway |
 
 ---
 
