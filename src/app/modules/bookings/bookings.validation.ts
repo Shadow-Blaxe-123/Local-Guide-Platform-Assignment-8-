@@ -11,6 +11,14 @@ const createBookingZodSchema = z.object({
   ),
 });
 
+const updateBookingGuideZodSchema = z.object({
+  status: z.enum(["CONFIRMED", "CANCELLED"]),
+});
+const updateBookingTouristZodSchema = z.object({
+  status: z.enum(["COMPLETED", "CANCELLED"]),
+});
 export const BookingsValidation = {
   createBookingZodSchema,
+  updateBookingGuideZodSchema,
+  updateBookingTouristZodSchema,
 };

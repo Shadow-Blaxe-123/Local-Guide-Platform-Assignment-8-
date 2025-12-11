@@ -14,4 +14,18 @@ router.post(
   BookingController.createBooking
 );
 
+router.patch(
+  "/guide/:id",
+  auth(Role.GUIDE),
+  validateRequest(BookingsValidation.updateBookingGuideZodSchema),
+  BookingController.updateBookingStatusGuide
+);
+
+router.patch(
+  "/tourist/:id",
+  auth(Role.TOURIST),
+  validateRequest(BookingsValidation.updateBookingTouristZodSchema),
+  BookingController.updateBookingStatusTourist
+);
+
 export const BookingsRoutes = router;
