@@ -467,10 +467,26 @@ const getAllBookings = async (
   };
 };
 
+const deleteBooking = async (id: string) => {
+  // 1. Ensure the tour exists
+  const booking = await prisma.booking.findUnique({
+    where: { id },
+  });
+
+  if (!booking) {
+    throw new ApiError(status.NOT_FOUND, "Booking not found!");
+  }
+
+  return await prisma.booking.delete({
+    where: { id },
+  });
+};
+
 export const BookingsService = {
   createBooking,
   updateBookingStatusGuide,
   updateBookingStatusTourist,
   getSingleBooking,
   getAllBookings,
+  deleteBooking,
 };

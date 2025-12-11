@@ -40,4 +40,6 @@ router.patch(
   BookingController.updateBookingStatusTourist
 );
 
+router.delete("/:id", auth(Role.ADMIN), BookingController.deleteBooking);
+
 export const BookingsRoutes = router;
