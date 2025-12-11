@@ -11,6 +11,8 @@ import status from "http-status";
 import type { IJWTPayload } from "../../interfaces";
 import config from "../../../config";
 import { stripe } from "../../../config/stripe";
+import type { IOptions } from "../../interfaces/pagination";
+import { paginationHelper } from "../../helper/paginationHelper";
 
 const createBooking = async (
   user: IJWTPayload,
@@ -241,16 +243,228 @@ const updateBookingStatusTourist = async (
   }
 };
 
-const getSingleBooking = async (id: string) => {
-  return await prisma.booking.findUnique({
-    where: {
-      id,
-    },
+const getSingleBooking = async (id: string, user: IJWTPayload) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id },
+    include: { guide: true, tourist: true },
+  });
+
+  if (!booking) {
+    throw new ApiError(status.NOT_FOUND, "Booking not found!");
+  }
+
+  // Admin always has access
+  if (user.role === "ADMIN") {
+    return booking;
+  }
+
+  if (user.role === "GUIDE") {
+    const guide = await prisma.guide.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!guide) {
+      throw new ApiError(status.FORBIDDEN, "Guide profile not found!");
+    }
+
+    if (booking.guideId !== guide.id) {
+      throw new ApiError(
+        status.UNAUTHORIZED,
+        "You are not authorized to view this booking!"
+      );
+    }
+
+    return booking;
+  }
+
+  if (user.role === "TOURIST") {
+    const tourist = await prisma.tourist.findUnique({
+      where: { userId: user.id },
+    });
+
+    if (!tourist) {
+      throw new ApiError(status.FORBIDDEN, "Tourist profile not found!");
+    }
+
+    if (booking.touristId !== tourist.id) {
+      throw new ApiError(
+        status.UNAUTHORIZED,
+        "You are not authorized to view this booking!"
+      );
+    }
+
+    return booking;
+  }
+};
+
+const getAllBookings = async (
+  params: any,
+  options: IOptions,
+  user: IJWTPayload
+) => {
+  const { page, limit, skip, sortBy, sort } =
+    paginationHelper.calculatePagination(options);
+
+  const {
+    status,
+    paymentStatus,
+    scheduledAt,
+    minPrice,
+    maxPrice,
+    minDateTime,
+    maxDateTime,
+
+    ...filter
+  } = params;
+
+  const andConditions: Prisma.BookingWhereInput[] = [];
+
+  //
+  // ROLE-BASED ACCESS CONTROL
+  //
+  if (user.role === "GUIDE") {
+    const guide = await prisma.guide.findUnique({
+      where: { userId: user.id },
+    });
+    if (!guide) {
+      throw new ApiError(status.FORBIDDEN, "Guide profile not found!");
+    }
+    andConditions.push({ guideId: guide.id });
+  }
+
+  if (user.role === "TOURIST") {
+    const tourist = await prisma.tourist.findUnique({
+      where: { userId: user.id },
+    });
+    if (!tourist) {
+      throw new ApiError(status.FORBIDDEN, "Tourist profile not found!");
+    }
+    andConditions.push({ touristId: tourist.id });
+  }
+
+  // Admin sees all — no restrictions
+
+  // FILTERS
+  //
+
+  // Status filter (Pending / Confirmed / Completed / Cancelled)
+  if (status) {
+    andConditions.push({ status });
+  }
+
+  // Payment status filter
+  if (paymentStatus) {
+    andConditions.push({ paymentStatus });
+  }
+
+  // Specific scheduled date
+  if (scheduledAt) {
+    andConditions.push({
+      scheduledAt: new Date(scheduledAt),
+    });
+  }
+
+  //
+  // Price Range Filtering
+  //
+  if (minPrice || maxPrice) {
+    andConditions.push({
+      price: {
+        gte: minPrice !== undefined ? Number(minPrice) : 0,
+        lte: maxPrice !== undefined ? Number(maxPrice) : 100000000000,
+      },
+    });
+  }
+
+  // DateTime range filtering
+
+  if (minDateTime || maxDateTime) {
+    const rangeFilter: Prisma.DateTimeFilter = {};
+
+    if (minDateTime) {
+      const parsed = new Date(minDateTime);
+
+      if (isNaN(parsed.getTime())) {
+        throw new ApiError(
+          status.BAD_REQUEST,
+          "Invalid minDateTime format. Must be ISO date or ISO datetime."
+        );
+      }
+
+      // If only date without time → assume start of day
+      if (/^\d{4}-\d{2}-\d{2}$/.test(minDateTime)) {
+        rangeFilter.gte = new Date(`${minDateTime}T00:00:00.000Z`);
+      } else {
+        rangeFilter.gte = parsed;
+      }
+    }
+
+    if (maxDateTime) {
+      const parsed = new Date(maxDateTime);
+
+      if (isNaN(parsed.getTime())) {
+        throw new ApiError(
+          status.BAD_REQUEST,
+          "Invalid maxDateTime format. Must be ISO date or ISO datetime."
+        );
+      }
+
+      // If only date without time → assume end of day
+      if (/^\d{4}-\d{2}-\d{2}$/.test(maxDateTime)) {
+        rangeFilter.lte = new Date(`${maxDateTime}T23:59:59.999Z`);
+      } else {
+        rangeFilter.lte = parsed;
+      }
+    }
+
+    andConditions.push({
+      scheduledAt: rangeFilter,
+    });
+  }
+
+  //
+  // Any Additional Exact-Match Filters
+  //
+  if (Object.keys(filter).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filter).map((key) => ({
+        [key]: { equals: (filter as any)[key] },
+      })),
+    });
+  }
+
+  //
+  // FINAL WHERE CONDITION
+  //
+  const whereConditions: Prisma.BookingWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  //
+  // QUERY DATABASE
+  //
+  const bookings = await prisma.booking.findMany({
+    skip,
+    take: limit,
+    where: whereConditions,
+    orderBy: { [sortBy]: sort },
     include: {
       guide: true,
       tourist: true,
     },
   });
+
+  const total = await prisma.booking.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: bookings,
+  };
 };
 
 export const BookingsService = {
@@ -258,4 +472,5 @@ export const BookingsService = {
   updateBookingStatusGuide,
   updateBookingStatusTourist,
   getSingleBooking,
+  getAllBookings,
 };
