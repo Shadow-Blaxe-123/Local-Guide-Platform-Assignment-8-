@@ -7,6 +7,12 @@ import { BookingsValidation } from "./bookings.validation";
 
 const router = Router();
 
+router.get(
+  "/:id",
+  auth(Role.TOURIST, Role.GUIDE, Role.ADMIN),
+  BookingController.getSingleBooking
+);
+
 router.post(
   "/",
   auth(Role.TOURIST),

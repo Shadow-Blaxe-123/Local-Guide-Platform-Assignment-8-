@@ -241,8 +241,21 @@ const updateBookingStatusTourist = async (
   }
 };
 
+const getSingleBooking = async (id: string) => {
+  return await prisma.booking.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      guide: true,
+      tourist: true,
+    },
+  });
+};
+
 export const BookingsService = {
   createBooking,
   updateBookingStatusGuide,
   updateBookingStatusTourist,
+  getSingleBooking,
 };

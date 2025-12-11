@@ -46,9 +46,21 @@ const updateBookingStatusTourist = catchAsync(
     });
   }
 );
+const getSingleBooking = catchAsync(async (req: Request, res: Response) => {
+  const result = await BookingsService.getSingleBooking(
+    req.params.id as string
+  );
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Booking updated successfully!",
+    data: result,
+  });
+});
 
 export const BookingController = {
   createBooking,
   updateBookingStatusGuide,
   updateBookingStatusTourist,
+  getSingleBooking,
 };
