@@ -23,6 +23,7 @@ model Tourist {
     id                String   @id @default(uuid())
     userId            String   @unique
     travelPreferences String[]
+    refund            Float    @default(0)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

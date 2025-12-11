@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "tourists" ADD COLUMN     "refund" DOUBLE PRECISION NOT NULL DEFAULT 0;
