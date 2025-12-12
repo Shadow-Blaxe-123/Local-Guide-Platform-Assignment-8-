@@ -18,7 +18,7 @@
     "dev": "tsx watch ./src/server.ts",
     "start": "node ./dist/src/server.js",
     "build":"tsc",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --schema=./prisma/schema"
   },
   "prisma": {
     "schema": "prisma/schema"
