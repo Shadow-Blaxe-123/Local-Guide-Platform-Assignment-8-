@@ -16,8 +16,14 @@
   "main": "server.js",
   "scripts": {
     "dev": "tsx watch ./src/server.ts",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "build":"tsc",
+    "postinstall": "prisma generate"
   },
+  "prisma": {
+    "schema": "prisma/schema"
+  }
+  ,
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
