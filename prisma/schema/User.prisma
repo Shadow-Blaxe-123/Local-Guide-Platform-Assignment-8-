@@ -53,6 +53,7 @@ model Guide {
     expertise String[]
     dailyRate Float?
     earnings  Float    @default(0)
+    avgRating Float    @default(0)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
