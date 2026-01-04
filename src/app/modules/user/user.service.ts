@@ -28,10 +28,11 @@ const createTourist = async (
   }
   console.log(isExist);
   console.log(data.pic);
+  const { travelPreferences, ...rest } = data;
   const res = await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
       data: {
-        ...data,
+        ...rest,
         email: data.email,
         password: await hash(data.password, config.hash_salt),
         name: data.name,
@@ -66,10 +67,11 @@ const createGuide = async (
   }
   console.log(isExist);
   console.log(data.pic);
+  const { dailyRate, expertise, ...rest } = data;
   const res = await prisma.$transaction(async (tx) => {
     const user = await tx.user.create({
       data: {
-        ...data,
+        ...rest,
         email: data.email,
         password: await hash(data.password, config.hash_salt),
         name: data.name,
@@ -79,8 +81,8 @@ const createGuide = async (
     return await tx.guide.create({
       data: {
         userId: user.id,
-        dailyRate: data.dailyRate ? data.dailyRate : 0,
-        expertise: data.expertise,
+        dailyRate: dailyRate ? dailyRate : 0,
+        expertise: expertise,
       },
       include: {
         user: true,
