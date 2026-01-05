@@ -246,7 +246,11 @@ const updateBookingStatusTourist = async (
 const getSingleBooking = async (id: string, user: IJWTPayload) => {
   const booking = await prisma.booking.findUnique({
     where: { id },
-    include: { guide: true, tourist: true },
+    include: {
+      guide: { include: { user: true } },
+      tourist: { include: { user: true } },
+      tour: true,
+    },
   });
 
   if (!booking) {
@@ -448,8 +452,9 @@ const getAllBookings = async (
     where: whereConditions,
     orderBy: { [sortBy]: sort },
     include: {
-      guide: true,
-      tourist: true,
+      guide: { include: { user: true } },
+      tourist: { include: { user: true } },
+      tour: true,
     },
   });
 
@@ -468,18 +473,17 @@ const getAllBookings = async (
 };
 
 const deleteBooking = async (id: string) => {
-  // 1. Ensure the tour exists
-  const booking = await prisma.booking.findUnique({
-    where: { id },
-  });
-
+  // 1. Ensure the booking exists
+  const booking = await prisma.booking.findUnique({ where: { id } });
   if (!booking) {
     throw new ApiError(status.NOT_FOUND, "Booking not found!");
   }
 
-  return await prisma.booking.delete({
-    where: { id },
-  });
+  // 2. Delete related payments first
+  await prisma.payment.deleteMany({ where: { bookingId: id } });
+
+  // 3. Delete the booking
+  return await prisma.booking.delete({ where: { id } });
 };
 
 export const BookingsService = {

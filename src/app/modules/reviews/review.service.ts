@@ -310,7 +310,7 @@ const getAllReviews = async (
     include: {
       tour: true,
       guide: true,
-      tourist: true,
+      tourist: { include: { user: true } },
     },
   });
 

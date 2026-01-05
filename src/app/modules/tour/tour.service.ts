@@ -164,7 +164,7 @@ const getAllTours = async (
     andConditions.push({
       price: {
         gte: minPrice !== undefined ? Number(minPrice) : 0,
-        lte: maxPrice !== undefined ? Number(maxPrice) : 10000000000000,
+        lte: maxPrice !== undefined ? Number(maxPrice) : 100000,
       },
     });
   }
@@ -183,6 +183,15 @@ const getAllTours = async (
   // ❗ Always exclude deleted tours
   if (!user || user.role === Role.TOURIST || user.role === Role.GUIDE) {
     andConditions.push({ isDeleted: false });
+  }
+  if (user?.role === Role.GUIDE) {
+    andConditions.push({
+      guide: {
+        is: {
+          userId: user.id,
+        },
+      },
+    });
   }
 
   const whereConditions: Prisma.TourWhereInput =
@@ -218,8 +227,8 @@ const getSingleTour = async (id: string) => {
       id,
     },
     include: {
-      reviews: true,
-      guide: true,
+      reviews: { include: { tourist: { include: { user: true } } } },
+      guide: { include: { user: true } },
     },
   });
 };

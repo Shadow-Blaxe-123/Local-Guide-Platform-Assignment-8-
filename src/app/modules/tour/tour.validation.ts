@@ -32,8 +32,8 @@ const createTourSchema = z.object({
 });
 const updateTourSchema = z.object({
   title: z.string().min(3).optional(),
-  description: z.string().min(10).optional(),
-  itinerary: z.string().min(10).optional(),
+  description: z.string().min(5).optional(),
+  itinerary: z.string().min(5).optional(),
   category: TourCategoryEnum.optional(),
   price: z.number().int().positive().optional(),
   city: z.string().min(2).optional(),

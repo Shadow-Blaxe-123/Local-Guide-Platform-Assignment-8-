@@ -10,9 +10,9 @@ model Booking {
     createdAt     DateTime      @default(now())
     updatedAt     DateTime      @updatedAt
 
-    tour    Tour    @relation(fields: [tourId], references: [id])
+    tour    Tour    @relation(fields: [tourId], references: [id], onDelete: Cascade)
     tourist Tourist @relation(fields: [touristId], references: [id])
-    guide   Guide   @relation(fields: [guideId], references: [id])
+    guide   Guide   @relation(fields: [guideId], references: [id], onDelete: Cascade)
 
     payment Payment?
 }
@@ -20,7 +20,7 @@ model Booking {
 model Payment {
     id                 String        @id @default(uuid())
     bookingId          String        @unique
-    booking            Booking       @relation(fields: [bookingId], references: [id])
+    booking            Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
     status             PaymentStatus @default(PENDING)
     price              Int           @default(0)
     paymentGatewayData Json?
