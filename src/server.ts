@@ -1,6 +1,7 @@
 import type { Server } from "http";
 import config from "./config";
 import app from "./app";
+import { UserService } from "./app/modules/user/user.service";
 
 async function bootstrap() {
   // This variable will hold our server instance
@@ -11,6 +12,13 @@ async function bootstrap() {
     server = app.listen(config.port, () => {
       console.log(`🚀 Server is running on http://localhost:${config.port}`);
     });
+
+    await UserService.createAdmin({
+      name: "Admin",
+      email: "admin@gmail.com",
+      password: "pass1234",
+    });
+    console.log("Admin created");
 
     // Function to gracefully shut down the server
     const exitHandler = () => {
