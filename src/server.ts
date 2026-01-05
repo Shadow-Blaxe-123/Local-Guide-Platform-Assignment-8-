@@ -13,13 +13,6 @@ async function bootstrap() {
       console.log(`🚀 Server is running on http://localhost:${config.port}`);
     });
 
-    await UserService.createAdmin({
-      name: "Admin",
-      email: "admin@gmail.com",
-      password: "pass1234",
-    });
-    console.log("Admin created");
-
     // Function to gracefully shut down the server
     const exitHandler = () => {
       if (server) {
