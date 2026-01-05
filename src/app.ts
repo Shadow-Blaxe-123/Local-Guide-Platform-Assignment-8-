@@ -12,7 +12,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: config.frontend_url,
+    origin: ["https://local-guide-platform-assignment-8.onrender.com/","https://local-guide-platform-assignment-8.onrender.com"],
     credentials: true,
   })
 );
