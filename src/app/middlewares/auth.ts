@@ -8,7 +8,7 @@ import type { IJWTPayload } from "../interfaces";
 const auth = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = req.cookies.accessToken;
+      const token = req.cookies.accessToken || req.headers.authorization;
       if (!token) {
         throw new ApiError(status.UNAUTHORIZED, "You are not logged in!");
       }
