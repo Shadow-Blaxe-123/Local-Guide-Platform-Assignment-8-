@@ -12,11 +12,7 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: [
-      `${config.frontend_url}`,
-      "http://localhost:3000",
-      `${config.frontend_url}/`,
-    ],
+    origin: config.frontend_url,
     credentials: true,
   })
 );
